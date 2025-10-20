@@ -34,7 +34,10 @@ class WorkoutCubit extends Cubit<WorkoutState> {
 
   /// Select an exercise
   void selectExercise(int index) {
-    // Deselect all
+    // Stop any currently playing exercise
+    _stopTimer();
+    
+    // Deselect all and stop any playing exercises
     final updated = <ExerciseModel>[];
     for (var i = 0; i < state.exercises.length; i++) {
       final ex = state.exercises[i];
@@ -43,6 +46,12 @@ class WorkoutCubit extends Cubit<WorkoutState> {
           exerciseState: ex.exerciseState.copyWith(
             exerciseIndex: i,
             isSelected: i == index,
+            // Stop playback for all other exercises
+            playbackState: i == index 
+                ? ex.exerciseState.playbackState 
+                : (ex.exerciseState.playbackState == ExercisePlaybackState.playing
+                    ? ExercisePlaybackState.paused
+                    : ex.exerciseState.playbackState),
           ),
         ),
       );
@@ -83,13 +92,30 @@ class WorkoutCubit extends Cubit<WorkoutState> {
 
   /// Play exercise
   void playExercise(int index) {
+    // Stop any currently playing exercise first
+    _stopTimer();
+    
     final exercises = List<ExerciseModel>.from(state.exercises);
+    
+    // Pause all other exercises
+    for (var i = 0; i < exercises.length; i++) {
+      if (i != index && exercises[i].exerciseState.playbackState == ExercisePlaybackState.playing) {
+        exercises[i] = exercises[i].copyWith(
+          exerciseState: exercises[i].exerciseState.copyWith(
+            playbackState: ExercisePlaybackState.paused,
+          ),
+        );
+      }
+    }
+    
+    // Start playing the selected exercise
     final ex = exercises[index];
     exercises[index] = ex.copyWith(
       exerciseState: ex.exerciseState.copyWith(
         playbackState: ExercisePlaybackState.playing,
       ),
     );
+    
     emit(state.copyWith(exercises: exercises));
     _startTimer(index);
   }

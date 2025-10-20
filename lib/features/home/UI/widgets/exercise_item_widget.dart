@@ -49,7 +49,7 @@ class ExerciseItemWidget extends StatelessWidget {
                   decoration: BoxDecoration(
                     color: AppColors.border,
                     shape: BoxShape.circle,
-                    border: Border.all(width: 2, color: AppColors.surface),
+                    border: Border.all(width: 2,  color: isSelected?AppColors.buttonPrimary: AppColors.surface),
                   ),
                   child: Container(
                     width: AppSizes.exerciseItemSize,
