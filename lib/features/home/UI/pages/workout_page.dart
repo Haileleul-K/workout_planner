@@ -34,12 +34,10 @@ class _WorkoutPageContent extends StatelessWidget {
           builder: (context, state) {
             if (state.isLoading) {
               return const Center(
-                child: CircularProgressIndicator(
-                  color: AppColors.primary,
-                ),
+                child: CircularProgressIndicator(color: AppColors.primary),
               );
             }
-        ////If we get an error, we show a error message and a retry button
+            ////If we get an error, we show a error message and a retry button
             if (state.error != null) {
               return Center(
                 child: Column(
@@ -59,22 +57,20 @@ class _WorkoutPageContent extends StatelessWidget {
                     const SizedBox(height: AppSpacing.md),
                     PrimaryButtonWidget(
                       label: 'Retry',
-                      onPressed: () => context.read<WorkoutCubit>().loadWorkout(),
+                      onPressed: () =>
+                          context.read<WorkoutCubit>().loadWorkout(),
                     ),
                   ],
                 ),
               );
             }
 
-
-        ////If we don't have a workout, we show a message
+            ////If we don't have a workout, we show a message
             if (state.workout == null) {
-              return const Center(
-                child: Text('No workout data available'),
-              );
+              return const Center(child: Text('No workout data available'));
             }
 
-        ////If we have a workout, we show the workout page
+            ////If we have a workout, we show the workout page
             return Column(
               children: [
                 // Header
@@ -106,9 +102,10 @@ class _WorkoutPageContent extends StatelessWidget {
                       : null,
                   onReorder: state.isEditMode
                       ? (oldIndex, newIndex) {
-                          context
-                              .read<WorkoutCubit>()
-                              .reorderExercises(oldIndex, newIndex);
+                          context.read<WorkoutCubit>().reorderExercises(
+                            oldIndex,
+                            newIndex,
+                          );
                         }
                       : null,
                 ),
@@ -120,8 +117,11 @@ class _WorkoutPageContent extends StatelessWidget {
                   child: Stack(
                     children: [
                       state.selectedExercise != null
-                          ? _buildExerciseDetails(context, state,
-                              showReplace: !state.isEditMode)
+                          ? _buildExerciseDetails(
+                              context,
+                              state,
+                              showReplace: !state.isEditMode,
+                            )
                           : _buildEmptyState(),
                       if (state.isEditMode)
                         Align(
@@ -161,7 +161,7 @@ class _WorkoutPageContent extends StatelessWidget {
             ),
           ),
           const SizedBox(width: AppSpacing.md),
-          
+
           // Workout name
           Expanded(
             child: Text(
@@ -181,16 +181,14 @@ class _WorkoutPageContent extends StatelessWidget {
               child: Row(
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  const Icon(
-                    Icons.access_time,
-                    size: 16,
-                    color: Colors.white,
-                  ),
+                  const Icon(Icons.access_time, size: 16, color: Colors.white),
                   const SizedBox(width: 6),
                   Text(
-                    _formatTime(state
-                        .getExerciseState(state.selectedExerciseIndex!)
-                        .elapsedSeconds),
+                    _formatTime(
+                      state
+                          .getExerciseState(state.selectedExerciseIndex!)
+                          .elapsedSeconds,
+                    ),
                     style: AppTextStyles.timer.copyWith(
                       color: Colors.white,
                       fontSize: 14,
@@ -224,7 +222,11 @@ class _WorkoutPageContent extends StatelessWidget {
     );
   }
 
-  Widget _buildExerciseDetails(BuildContext context, WorkoutState state, {bool showReplace = true}) {
+  Widget _buildExerciseDetails(
+    BuildContext context,
+    WorkoutState state, {
+    bool showReplace = true,
+  }) {
     final exercise = state.selectedExercise!;
     final exerciseState = exercise.exerciseState;
 
@@ -233,10 +235,14 @@ class _WorkoutPageContent extends StatelessWidget {
         exercise: exercise,
         exerciseState: exerciseState,
         onPlay: () {
-          context.read<WorkoutCubit>().playExercise(state.selectedExerciseIndex!);
+          context.read<WorkoutCubit>().playExercise(
+            state.selectedExerciseIndex!,
+          );
         },
         onPause: () {
-          context.read<WorkoutCubit>().pauseExercise(state.selectedExerciseIndex!);
+          context.read<WorkoutCubit>().pauseExercise(
+            state.selectedExerciseIndex!,
+          );
         },
         showReplace: showReplace,
       ),
@@ -268,21 +274,26 @@ class _WorkoutPageContent extends StatelessWidget {
   Widget _buildEditModeActions(BuildContext context, WorkoutState state) {
     return Padding(
       padding: const EdgeInsets.fromLTRB(
-          AppSpacing.md, 0, AppSpacing.md, AppSpacing.md),
+        AppSpacing.md,
+        0,
+        AppSpacing.md,
+        AppSpacing.md,
+      ),
       child: Container(
         padding: const EdgeInsets.all(AppSpacing.md),
         decoration: BoxDecoration(
           color: Colors.white,
-          borderRadius: BorderRadius.circular(AppRadius.lg),
+          borderRadius: BorderRadius.circular(50),
           boxShadow: const [
             BoxShadow(
               color: Color(0x0A000000),
               blurRadius: 16,
               offset: Offset(0, -2),
-            )
+            ),
           ],
         ),
         child: Row(
+          mainAxisSize: MainAxisSize.min,
           children: [
             Expanded(
               child: _pillButton(
@@ -298,8 +309,9 @@ class _WorkoutPageContent extends StatelessWidget {
             Expanded(
               child: _pillButton(
                 label: 'Save Changes',
-                background:
-                    state.hasChanges ? AppColors.primary : AppColors.buttonDisabled,
+                background: state.hasChanges
+                    ? AppColors.primary
+                    : AppColors.buttonDisabled,
                 textColor: AppColors.buttonTextPrimary,
                 onTap: state.hasChanges
                     ? () {
@@ -332,7 +344,7 @@ class _WorkoutPageContent extends StatelessWidget {
               color: Color(0x1A000000),
               blurRadius: 12,
               offset: Offset(0, 6),
-            )
+            ),
           ],
           border: background == AppColors.surface
               ? Border.all(color: AppColors.border)
@@ -341,18 +353,13 @@ class _WorkoutPageContent extends StatelessWidget {
         alignment: Alignment.center,
         child: Text(
           label,
-          style: AppTextStyles.buttonLarge.copyWith(
-            color: textColor,
-          ),
+          style: AppTextStyles.buttonLarge.copyWith(color: textColor),
         ),
       ),
     );
   }
 
-
-
-
-///Need to check GPT done for this function
+  ///Need to check GPT done for this function
 
   String _formatTime(int seconds) {
     final hours = seconds ~/ 3600;
@@ -366,4 +373,3 @@ class _WorkoutPageContent extends StatelessWidget {
     }
   }
 }
-

@@ -20,17 +20,13 @@ class AppColors {
   static const Color textTertiary = Color(0xFF999999);
 
   // Status Colors
-  static const Color success = Color(0xFF4CAF50);
   static const Color error = Color(0xFFF44336);
-  static const Color warning = Color(0xFFFF9800);
-  static const Color info = Color(0xFF2196F3);
 
   // UI Element Colors
   static const Color border = Color(0xFFE0E0E0);
   static const Color divider = Color(0xFFEEEEEE);
   static const Color overlay = Color(0x80000000);
   static const Color selectedBorder = Color(0xFFFDD835);
-  static const Color completedOverlay = Color(0xCC4CAF50);
 
   // Button Colors
   static const Color buttonPrimary = Color(0xFFFDD835);
@@ -43,10 +39,5 @@ class AppColors {
   static const Color equipmentBadge = Color(0xFFF5F5F5);
   static const Color equipmentText = Color(0xFF666666);
 
-  // Edit Mode Colors
-  static const Color editModeBorder = Color(0xFFF44336);
-  static const Color editModeBackground = Color(0xFFFFF3E0);
-  static const Color removeButton = Color(0xFFF44336);
-  static const Color addButton = Color(0xFF4CAF50);
 }
 

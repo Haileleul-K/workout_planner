@@ -47,12 +47,12 @@ class ExerciseDetailsPanel extends StatelessWidget {
               if (showReplace)
                 Container(
                   padding: const EdgeInsets.symmetric(
-                    horizontal: AppSpacing.sm,
-                    vertical: AppSpacing.xs,
+                    horizontal: 12,
+                    vertical: 10,
                   ),
                   decoration: BoxDecoration(
                     color: AppColors.primary,
-                    borderRadius: BorderRadius.circular(AppRadius.sm),
+                    borderRadius: BorderRadius.circular(50),
                   ),
                   child: Row(
                     mainAxisSize: MainAxisSize.min,

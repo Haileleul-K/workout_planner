@@ -33,12 +33,9 @@ class ExerciseListWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // Always use the reorderable list so a long press can immediately
-    // transition into a drag without requiring another gesture.
     return _buildReorderableList();
   }
 
-  // Removed non-reorderable list; we use one list that supports drag at any time
 
   Widget _buildReorderableList() {
     return SizedBox(
@@ -69,8 +66,8 @@ class ExerciseListWidget extends StatelessWidget {
               return Transform.scale(
                 scale: scale,
                 child: Material(
-                  elevation: 4 * t,
-                  color: Colors.transparent,
+                  //elevation: 4 * t,
+                 color: Colors.transparent,
                   borderRadius: BorderRadius.circular(AppSizes.exerciseItemSize / 2),
                   child: Opacity(
                     opacity: 0.85 + (0.15 * (1 - t)),
