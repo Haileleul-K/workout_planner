@@ -3,7 +3,7 @@ import '../../../../core/design_system/app_spacing.dart';
 import '../../models/exercise_model.dart';
 // Removed direct state import; state is embedded in ExerciseModel
 import 'exercise_item_widget.dart';
-import 'edit_button_widget.dart';
+// import 'edit_button_widget.dart';
 
 /// Horizontal scrollable exercise list widget
 class ExerciseListWidget extends StatelessWidget {
@@ -33,47 +33,12 @@ class ExerciseListWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    if (isEditMode && onReorder != null) {
-      return _buildReorderableList();
-    } else {
-      return _buildScrollableList();
-    }
+    // Always use the reorderable list so a long press can immediately
+    // transition into a drag without requiring another gesture.
+    return _buildReorderableList();
   }
 
-  Widget _buildScrollableList() {
-    return SizedBox(
-      height: AppSizes.exerciseItemSize + 40, // Item height + name space
-      child: ListView.separated(
-        scrollDirection: Axis.horizontal,
-        padding: const EdgeInsets.symmetric(horizontal: AppSpacing.md),
-        itemCount: exercises.length + 1, // +1 for edit button
-        separatorBuilder: (context, index) =>
-            const SizedBox(width: AppSpacing.exerciseItemSpacing),
-        itemBuilder: (context, index) {
-          if (index == exercises.length) {
-            // Edit button at the end
-            return EditButtonWidget(onTap: onEditTap);
-          }
-
-          final exercise = exercises[index];
-          final exerciseState = exercise.exerciseState;
-
-          return ExerciseItemWidget(
-            exercise: exercise,
-            exerciseState: exerciseState,
-            onTap: () => onExerciseTap(index),
-            onLongPress: onExerciseLongPress != null
-                ? () => onExerciseLongPress!(index)
-                : null,
-            isEditMode: isEditMode,
-            onRemove: onRemoveExercise != null
-                ? () => onRemoveExercise!(index)
-                : null,
-          );
-        },
-      ),
-    );
-  }
+  // Removed non-reorderable list; we use one list that supports drag at any time
 
   Widget _buildReorderableList() {
     return SizedBox(
@@ -84,6 +49,12 @@ class ExerciseListWidget extends StatelessWidget {
         buildDefaultDragHandles: false,
         padding: const EdgeInsets.symmetric(horizontal: AppSpacing.md),
         itemCount: exercises.length,
+        onReorderStart: (index) {
+          // Enter edit mode as soon as the user long-presses to start a drag
+          if (!isEditMode && onExerciseLongPress != null) {
+            onExerciseLongPress!(index);
+          }
+        },
         onReorder: (oldIndex, newIndex) {
           if (onReorder != null) {
             onReorder!(oldIndex, newIndex);
