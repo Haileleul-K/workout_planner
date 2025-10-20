@@ -1,25 +1,23 @@
 import 'package:flutter/material.dart';
 import '../../../../core/design_system/app_spacing.dart';
 import '../../models/exercise_model.dart';
-import '../../models/exercise_state_model.dart';
+// Removed direct state import; state is embedded in ExerciseModel
 import 'exercise_item_widget.dart';
 import 'edit_button_widget.dart';
 
 /// Horizontal scrollable exercise list widget
 class ExerciseListWidget extends StatelessWidget {
   final List<ExerciseModel> exercises;
-  final Map<String, ExerciseStateModel> exerciseStates;
-  final Function(String) onExerciseTap;
-  final Function(String)? onExerciseLongPress;
+  final Function(int) onExerciseTap;
+  final Function(int)? onExerciseLongPress;
   final VoidCallback onEditTap;
-  final Function(String)? onRemoveExercise;
+  final Function(int)? onRemoveExercise;
   final bool isEditMode;
   final Function(int, int)? onReorder;
 
   const ExerciseListWidget({
     Key? key,
     required this.exercises,
-    required this.exerciseStates,
     required this.onExerciseTap,
     this.onExerciseLongPress,
     required this.onEditTap,
@@ -27,6 +25,11 @@ class ExerciseListWidget extends StatelessWidget {
     this.isEditMode = false,
     this.onReorder,
   }) : super(key: key);
+
+
+  //we will have two build methods, one for the scrollable list and one for the reorderable list
+  //the scrollable list will be used to show the exercises in a horizontal scrollable list
+  //the reorderable list will be used to show the exercises in a horizontal scrollable list with drag and drop functionality
 
   @override
   Widget build(BuildContext context) {
@@ -53,19 +56,18 @@ class ExerciseListWidget extends StatelessWidget {
           }
 
           final exercise = exercises[index];
-          final exerciseState = exerciseStates[exercise.id] ??
-              ExerciseStateModel(exerciseId: exercise.id);
+          final exerciseState = exercise.exerciseState;
 
           return ExerciseItemWidget(
             exercise: exercise,
             exerciseState: exerciseState,
-            onTap: () => onExerciseTap(exercise.id),
+            onTap: () => onExerciseTap(index),
             onLongPress: onExerciseLongPress != null
-                ? () => onExerciseLongPress!(exercise.id)
+                ? () => onExerciseLongPress!(index)
                 : null,
             isEditMode: isEditMode,
             onRemove: onRemoveExercise != null
-                ? () => onRemoveExercise!(exercise.id)
+                ? () => onRemoveExercise!(index)
                 : null,
           );
         },
@@ -100,11 +102,10 @@ class ExerciseListWidget extends StatelessWidget {
         },
         itemBuilder: (context, index) {
           final exercise = exercises[index];
-          final exerciseState = exerciseStates[exercise.id] ??
-              ExerciseStateModel(exerciseId: exercise.id);
+          final exerciseState = exercise.exerciseState;
 
           return Padding(
-            key: ValueKey(exercise.id),
+            key: ValueKey('exercise_$index'),
             padding: EdgeInsets.only(
               right: index < exercises.length - 1
                   ? AppSpacing.exerciseItemSpacing
@@ -113,10 +114,10 @@ class ExerciseListWidget extends StatelessWidget {
             child: ExerciseItemWidget(
               exercise: exercise,
               exerciseState: exerciseState,
-              onTap: () => onExerciseTap(exercise.id),
+              onTap: () => onExerciseTap(index),
               isEditMode: isEditMode,
               onRemove: onRemoveExercise != null
-                  ? () => onRemoveExercise!(exercise.id)
+                  ? () => onRemoveExercise!(index)
                   : null,
             ),
           );

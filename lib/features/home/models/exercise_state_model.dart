@@ -8,16 +8,16 @@ enum ExercisePlaybackState {
   completed,
 }
 
-/// Model to track individual exercise state during workout
+// Model to track individual exercise state during workout
 class ExerciseStateModel extends Equatable {
-  final String exerciseId;
+  final int exerciseIndex;
   final bool isSelected;
   final ExercisePlaybackState playbackState;
   final int elapsedSeconds;
   final bool isCompleted;
 
   const ExerciseStateModel({
-    required this.exerciseId,
+    required this.exerciseIndex,
     this.isSelected = false,
     this.playbackState = ExercisePlaybackState.idle,
     this.elapsedSeconds = 0,
@@ -26,14 +26,14 @@ class ExerciseStateModel extends Equatable {
 
   /// Copy with method for state updates
   ExerciseStateModel copyWith({
-    String? exerciseId,
+    int? exerciseIndex,
     bool? isSelected,
     ExercisePlaybackState? playbackState,
     int? elapsedSeconds,
     bool? isCompleted,
   }) {
     return ExerciseStateModel(
-      exerciseId: exerciseId ?? this.exerciseId,
+      exerciseIndex: exerciseIndex ?? this.exerciseIndex,
       isSelected: isSelected ?? this.isSelected,
       playbackState: playbackState ?? this.playbackState,
       elapsedSeconds: elapsedSeconds ?? this.elapsedSeconds,
@@ -43,7 +43,7 @@ class ExerciseStateModel extends Equatable {
 
   @override
   List<Object?> get props => [
-        exerciseId,
+        exerciseIndex,
         isSelected,
         playbackState,
         elapsedSeconds,

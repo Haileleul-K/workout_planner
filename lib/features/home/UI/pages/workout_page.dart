@@ -11,7 +11,6 @@ import '../widgets/exercise_details_panel.dart';
 import '../widgets/timer_widget.dart';
 import '../widgets/primary_button_widget.dart';
 
-/// Main workout page
 class WorkoutPage extends StatelessWidget {
   const WorkoutPage({Key? key}) : super(key: key);
 
@@ -41,7 +40,7 @@ class _WorkoutPageContent extends StatelessWidget {
                 ),
               );
             }
-
+        ////If we get an error, we show a error message and a retry button
             if (state.error != null) {
               return Center(
                 child: Column(
@@ -68,12 +67,15 @@ class _WorkoutPageContent extends StatelessWidget {
               );
             }
 
+
+        ////If we don't have a workout, we show a message
             if (state.workout == null) {
               return const Center(
                 child: Text('No workout data available'),
               );
             }
 
+        ////If we have a workout, we show the workout page
             return Column(
               children: [
                 // Header
@@ -81,16 +83,15 @@ class _WorkoutPageContent extends StatelessWidget {
 
                 const SizedBox(height: AppSpacing.md),
 
-                // Exercise List
+                // Exercise List which is a horizontal scrollable list of exercises
                 ExerciseListWidget(
                   exercises: state.exercises,
-                  exerciseStates: state.exerciseStates,
-                  onExerciseTap: (exerciseId) {
+                  onExerciseTap: (index) {
                     if (!state.isEditMode) {
-                      context.read<WorkoutCubit>().selectExercise(exerciseId);
+                      context.read<WorkoutCubit>().selectExercise(index);
                     }
                   },
-                  onExerciseLongPress: (exerciseId) {
+                  onExerciseLongPress: (index) {
                     if (!state.isEditMode) {
                       context.read<WorkoutCubit>().enterEditMode();
                     }
@@ -100,8 +101,8 @@ class _WorkoutPageContent extends StatelessWidget {
                   },
                   isEditMode: state.isEditMode,
                   onRemoveExercise: state.isEditMode
-                      ? (exerciseId) {
-                          context.read<WorkoutCubit>().removeExercise(exerciseId);
+                      ? (index) {
+                          context.read<WorkoutCubit>().removeExercise(index);
                         }
                       : null,
                   onReorder: state.isEditMode
@@ -140,7 +141,7 @@ class _WorkoutPageContent extends StatelessWidget {
           // Back button
           GestureDetector(
             onTap: () {
-              if (state.selectedExerciseId != null) {
+              if (state.selectedExerciseIndex != null) {
                 context.read<WorkoutCubit>().deselectExercise();
               } else {
                 Navigator.of(context).maybePop();
@@ -163,17 +164,17 @@ class _WorkoutPageContent extends StatelessWidget {
           ),
 
           // Timer
-          if (state.selectedExerciseId != null)
+          if (state.selectedExerciseIndex != null)
             TimerWidget(
               elapsedSeconds: state
-                  .getExerciseState(state.selectedExerciseId!)
+                  .getExerciseState(state.selectedExerciseIndex!)
                   .elapsedSeconds,
             ),
 
           const SizedBox(width: AppSpacing.sm),
 
           // Stop button (when timer is running)
-          if (state.selectedExerciseId != null)
+          if (state.selectedExerciseIndex != null)
             GestureDetector(
               onTap: () {
                 // Add stop icon - pause/stop functionality
@@ -200,17 +201,17 @@ class _WorkoutPageContent extends StatelessWidget {
 
   Widget _buildExerciseDetails(BuildContext context, WorkoutState state) {
     final exercise = state.selectedExercise!;
-    final exerciseState = state.getExerciseState(exercise.id);
+    final exerciseState = exercise.exerciseState;
 
     return SingleChildScrollView(
       child: ExerciseDetailsPanel(
         exercise: exercise,
         exerciseState: exerciseState,
         onPlay: () {
-          context.read<WorkoutCubit>().playExercise(exercise.id);
+          context.read<WorkoutCubit>().playExercise(state.selectedExerciseIndex!);
         },
         onPause: () {
-          context.read<WorkoutCubit>().pauseExercise(exercise.id);
+          context.read<WorkoutCubit>().pauseExercise(state.selectedExerciseIndex!);
         },
       ),
     );

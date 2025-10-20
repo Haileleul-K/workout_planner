@@ -1,5 +1,6 @@
 import 'package:equatable/equatable.dart';
 import 'exercise_model.dart';
+import 'exercise_state_model.dart';
 
 /// Workout model representing a complete workout session
 class WorkoutModel extends Equatable {
@@ -11,7 +12,7 @@ class WorkoutModel extends Equatable {
     required this.exercises,
   });
 
-  /// Create from JSON
+
   factory WorkoutModel.fromJson(Map<String, dynamic> json) {
     final exercisesList = json['exercises'] as List<dynamic>? ?? [];
     final exercises = exercisesList
@@ -20,11 +21,10 @@ class WorkoutModel extends Equatable {
         .map((entry) {
           final index = entry.key;
           final exerciseJson = entry.value as Map<String, dynamic>;
-          // Add unique ID based on index if not present
-          if (!exerciseJson.containsKey('id')) {
-            exerciseJson['id'] = 'exercise_$index';
-          }
-          return ExerciseModel.fromJson(exerciseJson);
+          final base = ExerciseModel.fromJson(exerciseJson);
+          return base.copyWith(
+            exerciseState: ExerciseStateModel(exerciseIndex: index),
+          );
         })
         .toList();
 
@@ -34,15 +34,8 @@ class WorkoutModel extends Equatable {
     );
   }
 
-  /// Convert to JSON
-  Map<String, dynamic> toJson() {
-    return {
-      'workout_name': workoutName,
-      'exercises': exercises.map((e) => e.toJson()).toList(),
-    };
-  }
+ // me make this immutableee
 
-  /// Copy with method for immutability
   WorkoutModel copyWith({
     String? workoutName,
     List<ExerciseModel>? exercises,

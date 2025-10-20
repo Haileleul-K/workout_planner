@@ -1,7 +1,7 @@
 import 'dart:convert';
 import '../models/workout_model.dart';
 
-/// Repository for workout data
+//A repo for workout data
 class WorkoutRepository {
 
 
