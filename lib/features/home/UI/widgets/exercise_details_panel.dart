@@ -74,7 +74,7 @@ class ExerciseDetailsPanel extends StatelessWidget {
           ),
           const SizedBox(height: AppSpacing.md),
 
-          // Exercise Image with Play/Pause overlay
+          // Exercise Image with Play/Pause overlay and soft card
           GestureDetector(
             onTap: (isPlaying ? onPause : onPlay),
             child: Stack(
@@ -84,8 +84,16 @@ class ExerciseDetailsPanel extends StatelessWidget {
                   width: double.infinity,
                   height: AppSizes.exerciseImageSize,
                   decoration: BoxDecoration(
-                    color: AppColors.surfaceVariant,
-                    borderRadius: BorderRadius.circular(AppRadius.md),
+                    color: AppColors.surface,
+                    borderRadius: BorderRadius.circular(AppRadius.lg),
+                    border: Border.all(color: AppColors.border),
+                    boxShadow: const [
+                      BoxShadow(
+                        color: Color(0x0F000000),
+                        blurRadius: 20,
+                        offset: Offset(0, 8),
+                      )
+                    ],
                   ),
                   clipBehavior: Clip.hardEdge,
                   child: Image.network(
@@ -121,50 +129,20 @@ class ExerciseDetailsPanel extends StatelessWidget {
                   ),
                 ),
 
-                // // Play/Pause button overlay
-                // if (!isCompleted && !isPlaying)
-                //   Container(
-                //     width: 56,
-                //     height: 56,
-                //     decoration: BoxDecoration(
-                //       color: AppColors.primary,
-                //       shape: BoxShape.circle,
-                //       boxShadow: [
-                //         BoxShadow(
-                //           color: AppColors.overlay,
-                //           blurRadius: 8,
-                //           offset: const Offset(0, 2),
-                //         ),
-                //       ],
-                //     ),
-                //     child: const Icon(
-                //       Icons.play_arrow,
-                //       color: AppColors.textPrimary,
-                //       size: 32,
-                //     ),
-                //   ),
-
-                // if (isPlaying)
-                //   Container(
-                  //   width: 56,
-                  //   height: 56,
-                  //   decoration: BoxDecoration(
-                  //     color: AppColors.primary,
-                  //     shape: BoxShape.circle,
-                  //     boxShadow: [
-                  //       BoxShadow(
-                  //         color: AppColors.overlay,
-                  //         blurRadius: 8,
-                  //         offset: const Offset(0, 2),
-                  //       ),
-                  //     ],
-                  //   ),
-                  //   child: const Icon(
-                  //     Icons.pause,
-                  //     color: AppColors.textPrimary,
-                  //     size: 32,
-                  //   ),
-                  // ),
+                // Play/Pause button overlay
+                Container(
+                  width: 40,
+                  height: 40,
+                  decoration: const BoxDecoration(
+                    color: AppColors.primary,
+                    shape: BoxShape.circle,
+                  ),
+                  child: Icon(
+                    isPlaying ? Icons.pause : Icons.play_arrow,
+                    color: AppColors.textPrimary,
+                    size: 24,
+                  ),
+                ),
               ],
             ),
           ),

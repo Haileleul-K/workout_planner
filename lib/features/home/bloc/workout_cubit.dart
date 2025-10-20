@@ -112,7 +112,7 @@ class WorkoutCubit extends Cubit<WorkoutState> {
   void _startTimer(int index) {
     _stopTimer();
 
-    _timer = Timer.periodic(const Duration(seconds: 5), (timer) {
+    _timer = Timer.periodic(const Duration(seconds: 3), (timer) {
       final exercises = List<ExerciseModel>.from(state.exercises);
       final ex = exercises[index];
       final currentState = ex.exerciseState;

@@ -31,7 +31,7 @@ class AppRadius {
 class AppSizes {
   AppSizes._();
 
-  static const double exerciseItemSize = 80.0;
+  static const double exerciseItemSize = 100.0;
   static const double exerciseImageSize = 200.0;
   static const double iconSizeSmall = 16.0;
   static const double iconSizeMedium = 24.0;

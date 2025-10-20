@@ -249,71 +249,71 @@ class _WorkoutPageContent extends StatelessWidget {
   }
 
   Widget _buildEditModeActions(BuildContext context, WorkoutState state) {
-    return Container(
-      padding: const EdgeInsets.all(AppSpacing.md),
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
+    return Padding(
+      padding: const EdgeInsets.fromLTRB(
+          AppSpacing.md, 0, AppSpacing.md, AppSpacing.md),
+      child: Row(
         children: [
-          const Spacer(),
-          
-          // Edit mode instructions
-          Container(
-            padding: const EdgeInsets.all(AppSpacing.md),
-            decoration: BoxDecoration(
-              color: AppColors.editModeBackground,
-              borderRadius: BorderRadius.circular(AppRadius.md),
-            ),
-            child: Column(
-              children: [
-                Icon(
-                  Icons.info_outline,
-                  color: AppColors.textSecondary,
-                  size: AppSizes.iconSizeLarge,
-                ),
-                const SizedBox(height: AppSpacing.sm),
-                Text(
-                  'Edit Mode',
-                  style: AppTextStyles.headingMedium,
-                ),
-                const SizedBox(height: AppSpacing.xs),
-                Text(
-                  'Drag exercises to reorder or tap the minus button to remove',
-                  style: AppTextStyles.bodySmall,
-                  textAlign: TextAlign.center,
-                ),
-              ],
+          Expanded(
+            child: _pillButton(
+              label: 'Discard',
+              background: AppColors.surface,
+              textColor: AppColors.textPrimary,
+              onTap: () {
+                context.read<WorkoutCubit>().discardChanges();
+              },
             ),
           ),
-
-          const Spacer(),
-
-          // Action buttons
-          Row(
-            children: [
-              Expanded(
-                child: PrimaryButtonWidget(
-                  label: 'Discard',
-                  isSecondary: true,
-                  onPressed: () {
-                    context.read<WorkoutCubit>().discardChanges();
-                  },
-                ),
-              ),
-              const SizedBox(width: AppSpacing.md),
-              Expanded(
-                child: PrimaryButtonWidget(
-                  label: 'Save Changes',
-                  isEnabled: state.hasChanges,
-                  onPressed: state.hasChanges
-                      ? () {
-                          context.read<WorkoutCubit>().saveChanges();
-                        }
-                      : null,
-                ),
-              ),
-            ],
+          const SizedBox(width: AppSpacing.md),
+          Expanded(
+            child: _pillButton(
+              label: 'Save Changes',
+              background:
+                  state.hasChanges ? AppColors.primary : AppColors.buttonDisabled,
+              textColor: AppColors.buttonTextPrimary,
+              onTap: state.hasChanges
+                  ? () {
+                      context.read<WorkoutCubit>().saveChanges();
+                    }
+                  : null,
+            ),
           ),
         ],
+      ),
+    );
+  }
+
+  Widget _pillButton({
+    required String label,
+    required Color background,
+    required Color textColor,
+    VoidCallback? onTap,
+  }) {
+    return GestureDetector(
+      onTap: onTap,
+      child: Container(
+        height: 52,
+        decoration: BoxDecoration(
+          color: background,
+          borderRadius: BorderRadius.circular(28),
+          boxShadow: const [
+            BoxShadow(
+              color: Color(0x1A000000),
+              blurRadius: 12,
+              offset: Offset(0, 6),
+            )
+          ],
+          border: background == AppColors.surface
+              ? Border.all(color: AppColors.border)
+              : null,
+        ),
+        alignment: Alignment.center,
+        child: Text(
+          label,
+          style: AppTextStyles.buttonLarge.copyWith(
+            color: textColor,
+          ),
+        ),
       ),
     );
   }
