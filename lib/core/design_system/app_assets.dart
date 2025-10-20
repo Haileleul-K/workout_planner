@@ -1,4 +1,3 @@
-/// Asset paths for the application
 class AppAssets {
   AppAssets._();
 
@@ -11,7 +10,6 @@ class AppAssets {
   static const String cable = '$_iconsPath/cable.png';
   static const String bodyweight = '$_iconsPath/bodyweight.png';
 
-  /// Get equipment icon path by equipment type
   static String getEquipmentIcon(String equipment) {
     switch (equipment.toLowerCase()) {
       case 'barbell':
@@ -27,7 +25,6 @@ class AppAssets {
     }
   }
 
-  /// Get equipment display name
   static String getEquipmentDisplayName(String equipment) {
     switch (equipment.toLowerCase()) {
       case 'barbell':

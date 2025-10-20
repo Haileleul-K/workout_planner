@@ -118,11 +118,19 @@ class _WorkoutPageContent extends StatelessWidget {
 
                 // Exercise Details Panel or Edit Mode Actions
                 Expanded(
-                  child: state.isEditMode
-                      ? _buildEditModeActions(context, state)
-                      : (state.selectedExercise != null
-                          ? _buildExerciseDetails(context, state)
-                          : _buildEmptyState()),
+                  child: Stack(
+                    children: [
+                      state.selectedExercise != null
+                          ? _buildExerciseDetails(context, state,
+                              showReplace: !state.isEditMode)
+                          : _buildEmptyState(),
+                      if (state.isEditMode)
+                        Align(
+                          alignment: Alignment.bottomCenter,
+                          child: _buildEditModeActions(context, state),
+                        ),
+                    ],
+                  ),
                 ),
               ],
             );
@@ -199,7 +207,7 @@ class _WorkoutPageContent extends StatelessWidget {
     );
   }
 
-  Widget _buildExerciseDetails(BuildContext context, WorkoutState state) {
+  Widget _buildExerciseDetails(BuildContext context, WorkoutState state, {bool showReplace = true}) {
     final exercise = state.selectedExercise!;
     final exerciseState = exercise.exerciseState;
 
@@ -213,6 +221,7 @@ class _WorkoutPageContent extends StatelessWidget {
         onPause: () {
           context.read<WorkoutCubit>().pauseExercise(state.selectedExerciseIndex!);
         },
+        showReplace: showReplace,
       ),
     );
   }

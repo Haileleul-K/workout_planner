@@ -52,6 +52,9 @@ class WorkoutCubit extends Cubit<WorkoutState> {
       exercises: updated,
       selectedExerciseIndex: index,
     ));
+
+    // Auto start playing when selected
+    playExercise(index);
   }
 
   /// Deselect exercise
@@ -109,7 +112,7 @@ class WorkoutCubit extends Cubit<WorkoutState> {
   void _startTimer(int index) {
     _stopTimer();
 
-    _timer = Timer.periodic(const Duration(seconds: 1), (timer) {
+    _timer = Timer.periodic(const Duration(seconds: 5), (timer) {
       final exercises = List<ExerciseModel>.from(state.exercises);
       final ex = exercises[index];
       final currentState = ex.exerciseState;

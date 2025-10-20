@@ -23,18 +23,7 @@ class ExerciseModel extends Equatable {
       assetUrl: json['asset_url'] ?? '',
       gifAssetUrl: json['gif_asset_url'] ?? '',
       equipment: json['equipment'] ?? '',
-      exerciseState: const ExerciseStateModel(exerciseIndex: -1),
     );
-  }
-
-  /// Convert to JSON
-  Map<String, dynamic> toJson() {
-    return {
-      'name': name,
-      'asset_url': assetUrl,
-      'gif_asset_url': gifAssetUrl,
-      'equipment': equipment,
-    };
   }
 
   /// Copy with method for immutability

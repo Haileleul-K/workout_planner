@@ -94,37 +94,44 @@ class ExerciseItemWidget extends StatelessWidget {
                   ),
                 ),
 
-                // Play button overlay (when selected but not playing)
-                if (isSelected && !isPlaying && !isCompleted)
-                  Container(
-                    width: 32,
-                    height: 32,
-                    decoration: const BoxDecoration(
-                      color: AppColors.primary,
-                      shape: BoxShape.circle,
-                    ),
-                    child: const Icon(
-                      Icons.play_arrow,
-                      color: AppColors.textPrimary,
-                      size: 20,
-                    ),
-                  ),
-
-                // Completed checkmark overlay
-                if (isCompleted)
-                  Container(
-                    width: AppSizes.exerciseItemSize,
-                    height: AppSizes.exerciseItemSize,
-                    decoration: BoxDecoration(
-                      shape: BoxShape.circle,
-                      color: AppColors.completedOverlay,
-                    ),
-                    child: const Icon(
-                      Icons.check_circle,
-                      color: AppColors.surface,
-                      size: 32,
-                    ),
-                  ),
+                // Small badge at bottom-right: play when selected, check when completed
+                Positioned(
+                  bottom: 2,
+                  right: 2,
+                  child: () {
+                    if (isCompleted) {
+                      return Container(
+                        width: 22,
+                        height: 22,
+                        decoration: const BoxDecoration(
+                          color: AppColors.primary,
+                          shape: BoxShape.circle,
+                        ),
+                        child: const Icon(
+                          Icons.check,
+                          size: 14,
+                          color: AppColors.textPrimary,
+                        ),
+                      );
+                    }
+                    if (isSelected) {
+                      return Container(
+                        width: 22,
+                        height: 22,
+                        decoration: const BoxDecoration(
+                          color: AppColors.primary,
+                          shape: BoxShape.circle,
+                        ),
+                        child: const Icon(
+                          Icons.play_arrow,
+                          size: 14,
+                          color: AppColors.textPrimary,
+                        ),
+                      );
+                    }
+                    return const SizedBox.shrink();
+                  }(),
+                ),
 
                 // Remove button (edit mode)
                 if (isEditMode && onRemove != null)

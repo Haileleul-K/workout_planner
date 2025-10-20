@@ -13,6 +13,7 @@ class ExerciseDetailsPanel extends StatelessWidget {
   final ExerciseStateModel exerciseState;
   final VoidCallback onPlay;
   final VoidCallback onPause;
+  final bool showReplace;
 
   const ExerciseDetailsPanel({
     Key? key,
@@ -20,12 +21,12 @@ class ExerciseDetailsPanel extends StatelessWidget {
     required this.exerciseState,
     required this.onPlay,
     required this.onPause,
+    this.showReplace = true,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     final isPlaying = exerciseState.playbackState == ExercisePlaybackState.playing;
-    final isCompleted = exerciseState.isCompleted;
 
     return Container(
       padding: const EdgeInsets.all(AppSpacing.md),
@@ -43,38 +44,39 @@ class ExerciseDetailsPanel extends StatelessWidget {
                   style: AppTextStyles.exerciseTitle,
                 ),
               ),
-              Container(
-                padding: const EdgeInsets.symmetric(
-                  horizontal: AppSpacing.sm,
-                  vertical: AppSpacing.xs,
+              if (showReplace)
+                Container(
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: AppSpacing.sm,
+                    vertical: AppSpacing.xs,
+                  ),
+                  decoration: BoxDecoration(
+                    color: AppColors.primary,
+                    borderRadius: BorderRadius.circular(AppRadius.sm),
+                  ),
+                  child: Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      const Icon(
+                        Icons.swap_horiz,
+                        size: AppSizes.iconSizeSmall,
+                        color: AppColors.textPrimary,
+                      ),
+                      const SizedBox(width: AppSpacing.xs),
+                      Text(
+                        'Replace',
+                        style: AppTextStyles.buttonSmall,
+                      ),
+                    ],
+                  ),
                 ),
-                decoration: BoxDecoration(
-                  color: AppColors.primary,
-                  borderRadius: BorderRadius.circular(AppRadius.sm),
-                ),
-                child: Row(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    const Icon(
-                      Icons.swap_horiz,
-                      size: AppSizes.iconSizeSmall,
-                      color: AppColors.textPrimary,
-                    ),
-                    const SizedBox(width: AppSpacing.xs),
-                    Text(
-                      'Replace',
-                      style: AppTextStyles.buttonSmall,
-                    ),
-                  ],
-                ),
-              ),
             ],
           ),
           const SizedBox(height: AppSpacing.md),
 
           // Exercise Image with Play/Pause overlay
           GestureDetector(
-            onTap: isCompleted ? null : (isPlaying ? onPause : onPlay),
+            onTap: (isPlaying ? onPause : onPlay),
             child: Stack(
               alignment: Alignment.center,
               children: [
@@ -119,50 +121,50 @@ class ExerciseDetailsPanel extends StatelessWidget {
                   ),
                 ),
 
-                // Play/Pause button overlay
-                if (!isCompleted && !isPlaying)
-                  Container(
-                    width: 56,
-                    height: 56,
-                    decoration: BoxDecoration(
-                      color: AppColors.primary,
-                      shape: BoxShape.circle,
-                      boxShadow: [
-                        BoxShadow(
-                          color: AppColors.overlay,
-                          blurRadius: 8,
-                          offset: const Offset(0, 2),
-                        ),
-                      ],
-                    ),
-                    child: const Icon(
-                      Icons.play_arrow,
-                      color: AppColors.textPrimary,
-                      size: 32,
-                    ),
-                  ),
+                // // Play/Pause button overlay
+                // if (!isCompleted && !isPlaying)
+                //   Container(
+                //     width: 56,
+                //     height: 56,
+                //     decoration: BoxDecoration(
+                //       color: AppColors.primary,
+                //       shape: BoxShape.circle,
+                //       boxShadow: [
+                //         BoxShadow(
+                //           color: AppColors.overlay,
+                //           blurRadius: 8,
+                //           offset: const Offset(0, 2),
+                //         ),
+                //       ],
+                //     ),
+                //     child: const Icon(
+                //       Icons.play_arrow,
+                //       color: AppColors.textPrimary,
+                //       size: 32,
+                //     ),
+                //   ),
 
-                if (isPlaying)
-                  Container(
-                    width: 56,
-                    height: 56,
-                    decoration: BoxDecoration(
-                      color: AppColors.primary,
-                      shape: BoxShape.circle,
-                      boxShadow: [
-                        BoxShadow(
-                          color: AppColors.overlay,
-                          blurRadius: 8,
-                          offset: const Offset(0, 2),
-                        ),
-                      ],
-                    ),
-                    child: const Icon(
-                      Icons.pause,
-                      color: AppColors.textPrimary,
-                      size: 32,
-                    ),
-                  ),
+                // if (isPlaying)
+                //   Container(
+                  //   width: 56,
+                  //   height: 56,
+                  //   decoration: BoxDecoration(
+                  //     color: AppColors.primary,
+                  //     shape: BoxShape.circle,
+                  //     boxShadow: [
+                  //       BoxShadow(
+                  //         color: AppColors.overlay,
+                  //         blurRadius: 8,
+                  //         offset: const Offset(0, 2),
+                  //       ),
+                  //     ],
+                  //   ),
+                  //   child: const Icon(
+                  //     Icons.pause,
+                  //     color: AppColors.textPrimary,
+                  //     size: 32,
+                  //   ),
+                  // ),
               ],
             ),
           ),
