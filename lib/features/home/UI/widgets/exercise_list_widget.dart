@@ -86,7 +86,7 @@ class ExerciseListWidget extends StatelessWidget {
           final exercise = exercises[index];
           final exerciseState = exercise.exerciseState;
 
-          return ReorderableDragStartListener(
+          return ReorderableDelayedDragStartListener(
             key: ValueKey('exercise_$index'),
             index: index,
             child: Padding(

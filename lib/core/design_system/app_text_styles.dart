@@ -78,7 +78,7 @@ class AppTextStyles {
   );
 
   static const TextStyle buttonSmall = TextStyle(
-    fontSize: 12,
+    fontSize: 14,
     fontWeight: FontWeight.w600,
     color: AppColors.buttonTextPrimary,
   );
@@ -111,7 +111,7 @@ class AppTextStyles {
 
   static const TextStyle exerciseTitle = TextStyle(
     fontSize: 20,
-    fontWeight: FontWeight.bold,
+    fontWeight: FontWeight.w600,
     color: AppColors.textPrimary,
   );
 
@@ -123,7 +123,7 @@ class AppTextStyles {
   );
 
   static const TextStyle equipmentLabel = TextStyle(
-    fontSize: 11,
+    fontSize: 12,
     fontWeight: FontWeight.w500,
     color: AppColors.equipmentText,
   );
