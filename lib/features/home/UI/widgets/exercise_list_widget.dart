@@ -80,6 +80,8 @@ class ExerciseListWidget extends StatelessWidget {
       height: AppSizes.exerciseItemSize + 40,
       child: ReorderableListView.builder(
         scrollDirection: Axis.horizontal,
+        physics: const AlwaysScrollableScrollPhysics(),
+        buildDefaultDragHandles: false,
         padding: const EdgeInsets.symmetric(horizontal: AppSpacing.md),
         itemCount: exercises.length,
         onReorder: (oldIndex, newIndex) {
@@ -91,10 +93,19 @@ class ExerciseListWidget extends StatelessWidget {
           return AnimatedBuilder(
             animation: animation,
             builder: (BuildContext context, Widget? child) {
-              return Material(
-                elevation: 0,
-                color: Colors.transparent,
-                child: child,
+              final t = Curves.easeInOut.transform(animation.value);
+              final scale = 1.0 + (t * 0.1);
+              return Transform.scale(
+                scale: scale,
+                child: Material(
+                  elevation: 4 * t,
+                  color: Colors.transparent,
+                  borderRadius: BorderRadius.circular(AppSizes.exerciseItemSize / 2),
+                  child: Opacity(
+                    opacity: 0.85 + (0.15 * (1 - t)),
+                    child: child,
+                  ),
+                ),
               );
             },
             child: child,
@@ -104,21 +115,24 @@ class ExerciseListWidget extends StatelessWidget {
           final exercise = exercises[index];
           final exerciseState = exercise.exerciseState;
 
-          return Padding(
+          return ReorderableDragStartListener(
             key: ValueKey('exercise_$index'),
-            padding: EdgeInsets.only(
-              right: index < exercises.length - 1
-                  ? AppSpacing.exerciseItemSpacing
-                  : 0,
-            ),
-            child: ExerciseItemWidget(
-              exercise: exercise,
-              exerciseState: exerciseState,
-              onTap: () => onExerciseTap(index),
-              isEditMode: isEditMode,
-              onRemove: onRemoveExercise != null
-                  ? () => onRemoveExercise!(index)
-                  : null,
+            index: index,
+            child: Padding(
+              padding: EdgeInsets.only(
+                right: index < exercises.length - 1
+                    ? AppSpacing.exerciseItemSpacing
+                    : 0,
+              ),
+              child: ExerciseItemWidget(
+                exercise: exercise,
+                exerciseState: exerciseState,
+                onTap: () => onExerciseTap(index),
+                isEditMode: isEditMode,
+                onRemove: onRemoveExercise != null
+                    ? () => onRemoveExercise!(index)
+                    : null,
+              ),
             ),
           );
         },
