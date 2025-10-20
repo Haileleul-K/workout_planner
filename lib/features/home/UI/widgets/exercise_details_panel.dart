@@ -74,76 +74,45 @@ class ExerciseDetailsPanel extends StatelessWidget {
           ),
           const SizedBox(height: AppSpacing.md),
 
-          // Exercise Image with Play/Pause overlay and soft card
-          GestureDetector(
-            onTap: (isPlaying ? onPause : onPlay),
-            child: Stack(
-              alignment: Alignment.center,
-              children: [
-                Container(
-                  width: double.infinity,
-                  height: AppSizes.exerciseImageSize,
-                  decoration: BoxDecoration(
-                    color: AppColors.surface,
-                    borderRadius: BorderRadius.circular(AppRadius.lg),
-                    border: Border.all(color: AppColors.border),
-                    boxShadow: const [
-                      BoxShadow(
-                        color: Color(0x0F000000),
-                        blurRadius: 20,
-                        offset: Offset(0, 8),
-                      )
-                    ],
+          // Exercise Image in card
+          Container(
+            width: double.infinity,
+            height: AppSizes.exerciseImageSize,
+            decoration: BoxDecoration(
+              color: const Color(0xFFF8F8F8),
+              borderRadius: BorderRadius.circular(AppRadius.lg),
+            ),
+            clipBehavior: Clip.hardEdge,
+            child: Image.network(
+              isPlaying ? exercise.gifAssetUrl : exercise.assetUrl,
+              fit: BoxFit.contain,
+              errorBuilder: (context, error, stackTrace) {
+                return Container(
+                  color: AppColors.surfaceVariant,
+                  child: const Center(
+                    child: Icon(
+                      Icons.fitness_center,
+                      size: 48,
+                      color: AppColors.textTertiary,
+                    ),
                   ),
-                  clipBehavior: Clip.hardEdge,
-                  child: Image.network(
-                    isPlaying ? exercise.gifAssetUrl : exercise.assetUrl,
-                    fit: BoxFit.contain,
-                    errorBuilder: (context, error, stackTrace) {
-                      return Container(
-                        color: AppColors.surfaceVariant,
-                        child: const Center(
-                          child: Icon(
-                            Icons.fitness_center,
-                            size: 48,
-                            color: AppColors.textTertiary,
-                          ),
-                        ),
-                      );
-                    },
-                    loadingBuilder: (context, child, loadingProgress) {
-                      if (loadingProgress == null) return child;
-                      return Container(
-                        color: AppColors.surfaceVariant,
-                        child: Center(
-                          child: CircularProgressIndicator(
-                            value: loadingProgress.expectedTotalBytes != null
-                                ? loadingProgress.cumulativeBytesLoaded /
-                                    loadingProgress.expectedTotalBytes!
-                                : null,
-                            color: AppColors.primary,
-                          ),
-                        ),
-                      );
-                    },
+                );
+              },
+              loadingBuilder: (context, child, loadingProgress) {
+                if (loadingProgress == null) return child;
+                return Container(
+                  color: AppColors.surfaceVariant,
+                  child: Center(
+                    child: CircularProgressIndicator(
+                      value: loadingProgress.expectedTotalBytes != null
+                          ? loadingProgress.cumulativeBytesLoaded /
+                              loadingProgress.expectedTotalBytes!
+                          : null,
+                      color: AppColors.primary,
+                    ),
                   ),
-                ),
-
-                // Play/Pause button overlay
-                Container(
-                  width: 40,
-                  height: 40,
-                  decoration: const BoxDecoration(
-                    color: AppColors.primary,
-                    shape: BoxShape.circle,
-                  ),
-                  child: Icon(
-                    isPlaying ? Icons.pause : Icons.play_arrow,
-                    color: AppColors.textPrimary,
-                    size: 24,
-                  ),
-                ),
-              ],
+                );
+              },
             ),
           ),
           const SizedBox(height: AppSpacing.md),
