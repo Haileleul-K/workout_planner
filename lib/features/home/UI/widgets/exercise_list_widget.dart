@@ -42,7 +42,7 @@ class ExerciseListWidget extends StatelessWidget {
 
   Widget _buildReorderableList() {
     return SizedBox(
-      height: AppSizes.exerciseItemSize + 40,
+      height: AppSizes.exerciseItemSize + 8,
       child: ReorderableListView.builder(
         scrollDirection: Axis.horizontal,
         physics: const AlwaysScrollableScrollPhysics(),

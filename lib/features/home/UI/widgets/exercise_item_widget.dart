@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import '../../../../core/design_system/app_colors.dart';
 import '../../../../core/design_system/app_spacing.dart';
-import '../../../../core/design_system/app_text_styles.dart';
 import '../../models/exercise_model.dart';
 import '../../models/exercise_state_model.dart';
 
@@ -140,35 +139,27 @@ class ExerciseItemWidget extends StatelessWidget {
                 // Remove button (edit mode)
                 if (isEditMode && onRemove != null)
                   Positioned(
-                    top: 4,
-                    right: 10,
+                    top: -2,
+                    left: -2,
                     child: GestureDetector(
                       onTap: onRemove,
                       child: Container(
-                        width: AppSizes.badgeSize,
-                        height: AppSizes.badgeSize,
-                        decoration: const BoxDecoration(
-                          color: AppColors.removeButton,
+                        width: 24,
+                        height: 24,
+                        decoration: BoxDecoration(
+                          color: const Color(0xFFD32F2F),
                           shape: BoxShape.circle,
+                          border: Border.all(color: Colors.white, width: 2),
                         ),
                         child: const Icon(
                           Icons.remove,
-                          color: AppColors.surface,
-                          size: 14,
+                          color: Colors.white,
+                          size: 16,
                         ),
                       ),
                     ),
                   ),
               ],
-            ),
-            const SizedBox(height: AppSpacing.xs),
-            // Exercise Name
-            Text(
-              exercise.name,
-              style: AppTextStyles.exerciseName,
-              maxLines: 2,
-              textAlign: TextAlign.center,
-              overflow: TextOverflow.ellipsis,
             ),
           ],
         ),

@@ -8,7 +8,6 @@ import '../../bloc/workout_state.dart';
 import '../../repository/workout_repo.dart';
 import '../widgets/exercise_list_widget.dart';
 import '../widgets/exercise_details_panel.dart';
-import '../widgets/timer_widget.dart';
 import '../widgets/primary_button_widget.dart';
 
 class WorkoutPage extends StatelessWidget {
@@ -171,35 +170,53 @@ class _WorkoutPageContent extends StatelessWidget {
             ),
           ),
 
-          // Timer
+          // Timer with Stop button in one black container
           if (state.selectedExerciseIndex != null)
-            TimerWidget(
-              elapsedSeconds: state
-                  .getExerciseState(state.selectedExerciseIndex!)
-                  .elapsedSeconds,
-            ),
-
-          const SizedBox(width: AppSpacing.sm),
-
-          // Stop button (when timer is running)
-          if (state.selectedExerciseIndex != null)
-            GestureDetector(
-              onTap: () {
-                // Add stop icon - pause/stop functionality
-                context.read<WorkoutCubit>().deselectExercise();
-              },
-              child: Container(
-                width: 36,
-                height: 36,
-                decoration: const BoxDecoration(
-                  color: Color(0xFFFF3B30),
-                  shape: BoxShape.circle,
-                ),
-                child: const Icon(
-                  Icons.stop_rounded,
-                  color: Colors.white,
-                  size: 20,
-                ),
+            Container(
+              padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+              decoration: BoxDecoration(
+                color: const Color(0xFF000000),
+                borderRadius: BorderRadius.circular(20),
+              ),
+              child: Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  const Icon(
+                    Icons.access_time,
+                    size: 16,
+                    color: Colors.white,
+                  ),
+                  const SizedBox(width: 6),
+                  Text(
+                    _formatTime(state
+                        .getExerciseState(state.selectedExerciseIndex!)
+                        .elapsedSeconds),
+                    style: AppTextStyles.timer.copyWith(
+                      color: Colors.white,
+                      fontSize: 14,
+                      fontWeight: FontWeight.w600,
+                    ),
+                  ),
+                  const SizedBox(width: 8),
+                  GestureDetector(
+                    onTap: () {
+                      context.read<WorkoutCubit>().deselectExercise();
+                    },
+                    child: Container(
+                      width: 28,
+                      height: 28,
+                      decoration: const BoxDecoration(
+                        color: Color(0xFFFF3B30),
+                        shape: BoxShape.circle,
+                      ),
+                      child: const Icon(
+                        Icons.stop_rounded,
+                        color: Colors.white,
+                        size: 16,
+                      ),
+                    ),
+                  ),
+                ],
               ),
             ),
         ],
@@ -330,6 +347,18 @@ class _WorkoutPageContent extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  String _formatTime(int seconds) {
+    final hours = seconds ~/ 3600;
+    final minutes = (seconds % 3600) ~/ 60;
+    final secs = seconds % 60;
+
+    if (hours > 0) {
+      return '${hours.toString().padLeft(2, '0')}:${minutes.toString().padLeft(2, '0')}:${secs.toString().padLeft(2, '0')}';
+    } else {
+      return '${minutes.toString().padLeft(2, '0')}:${secs.toString().padLeft(2, '0')}';
+    }
   }
 }
 
