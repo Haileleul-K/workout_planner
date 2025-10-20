@@ -192,13 +192,13 @@ class _WorkoutPageContent extends StatelessWidget {
                 width: 36,
                 height: 36,
                 decoration: const BoxDecoration(
-                  color: AppColors.error,
+                  color: Color(0xFFFF3B30),
                   shape: BoxShape.circle,
                 ),
                 child: const Icon(
-                  Icons.stop,
-                  color: AppColors.surface,
-                  size: AppSizes.iconSizeSmall,
+                  Icons.stop_rounded,
+                  color: Colors.white,
+                  size: 20,
                 ),
               ),
             ),
@@ -252,33 +252,47 @@ class _WorkoutPageContent extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.fromLTRB(
           AppSpacing.md, 0, AppSpacing.md, AppSpacing.md),
-      child: Row(
-        children: [
-          Expanded(
-            child: _pillButton(
-              label: 'Discard',
-              background: AppColors.surface,
-              textColor: AppColors.textPrimary,
-              onTap: () {
-                context.read<WorkoutCubit>().discardChanges();
-              },
+      child: Container(
+        padding: const EdgeInsets.all(AppSpacing.md),
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(AppRadius.lg),
+          boxShadow: const [
+            BoxShadow(
+              color: Color(0x0A000000),
+              blurRadius: 16,
+              offset: Offset(0, -2),
+            )
+          ],
+        ),
+        child: Row(
+          children: [
+            Expanded(
+              child: _pillButton(
+                label: 'Discard',
+                background: AppColors.surface,
+                textColor: AppColors.textPrimary,
+                onTap: () {
+                  context.read<WorkoutCubit>().discardChanges();
+                },
+              ),
             ),
-          ),
-          const SizedBox(width: AppSpacing.md),
-          Expanded(
-            child: _pillButton(
-              label: 'Save Changes',
-              background:
-                  state.hasChanges ? AppColors.primary : AppColors.buttonDisabled,
-              textColor: AppColors.buttonTextPrimary,
-              onTap: state.hasChanges
-                  ? () {
-                      context.read<WorkoutCubit>().saveChanges();
-                    }
-                  : null,
+            const SizedBox(width: AppSpacing.md),
+            Expanded(
+              child: _pillButton(
+                label: 'Save Changes',
+                background:
+                    state.hasChanges ? AppColors.primary : AppColors.buttonDisabled,
+                textColor: AppColors.buttonTextPrimary,
+                onTap: state.hasChanges
+                    ? () {
+                        context.read<WorkoutCubit>().saveChanges();
+                      }
+                    : null,
+              ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }

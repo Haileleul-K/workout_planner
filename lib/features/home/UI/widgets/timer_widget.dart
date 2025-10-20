@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import '../../../../core/design_system/app_colors.dart';
-import '../../../../core/design_system/app_spacing.dart';
 import '../../../../core/design_system/app_text_styles.dart';
 
 /// Timer widget to display elapsed time
@@ -28,26 +26,29 @@ class TimerWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       padding: const EdgeInsets.symmetric(
-        horizontal: AppSpacing.sm,
-        vertical: AppSpacing.xs,
+        horizontal: 12,
+        vertical: 8,
       ),
       decoration: BoxDecoration(
-        color: AppColors.surface,
-        border: Border.all(color: AppColors.border),
-        borderRadius: BorderRadius.circular(AppRadius.sm),
+        color: const Color(0xFF000000),
+        borderRadius: BorderRadius.circular(20),
       ),
       child: Row(
         mainAxisSize: MainAxisSize.min,
         children: [
           const Icon(
-            Icons.timer_outlined,
-            size: AppSizes.iconSizeSmall,
-            color: AppColors.textSecondary,
+            Icons.access_time,
+            size: 16,
+            color: Colors.white,
           ),
-          const SizedBox(width: AppSpacing.xs),
+          const SizedBox(width: 6),
           Text(
             _formatTime(elapsedSeconds),
-            style: AppTextStyles.timer,
+            style: AppTextStyles.timer.copyWith(
+              color: Colors.white,
+              fontSize: 14,
+              fontWeight: FontWeight.w600,
+            ),
           ),
         ],
       ),
